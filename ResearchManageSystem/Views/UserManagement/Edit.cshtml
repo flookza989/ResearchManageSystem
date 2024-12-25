@@ -1,0 +1,86 @@
+﻿@using ResearchManageSystem.Enums
+@model EditUserViewModel
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<div class="bg-white shadow sm:rounded-lg">
+    <div class="px-4 py-5 sm:p-6">
+        <h2 class="text-lg font-medium text-gray-900">Edit User</h2>
+
+        <form asp-action="Edit" method="post" class="mt-5">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Username" />
+
+            <div asp-validation-summary="ModelOnly" class="mb-4 p-4 bg-red-50 text-red-600 rounded-md"></div>
+
+            <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+                <div>
+                    <label asp-for="FirstName" class="block text-sm font-medium text-gray-700"></label>
+                    <div class="mt-1">
+                        <input asp-for="FirstName" class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+                        <span asp-validation-for="FirstName" class="text-sm text-red-600"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label asp-for="LastName" class="block text-sm font-medium text-gray-700"></label>
+                    <div class="mt-1">
+                        <input asp-for="LastName" class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+                        <span asp-validation-for="LastName" class="text-sm text-red-600"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label asp-for="Email" class="block text-sm font-medium text-gray-700"></label>
+                    <div class="mt-1">
+                        <input asp-for="Email" type="email" class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+                        <span asp-validation-for="Email" class="text-sm text-red-600"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label asp-for="NewPassword" class="block text-sm font-medium text-gray-700"></label>
+                    <div class="mt-1">
+                        <input asp-for="NewPassword" type="password" class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+                        <span asp-validation-for="NewPassword" class="text-sm text-red-600"></span>
+                        <p class="mt-1 text-sm text-gray-500">Leave blank to keep current password</p>
+                    </div>
+                </div>
+
+                <div>
+                    <label asp-for="Role" class="block text-sm font-medium text-gray-700"></label>
+                    <div class="mt-1">
+                        <select asp-for="Role" asp-items="Html.GetEnumSelectList<UserRole>()" class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        </select>
+                        <span asp-validation-for="Role" class="text-sm text-red-600"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label asp-for="DepartmentId" class="block text-sm font-medium text-gray-700"></label>
+                    <div class="mt-1">
+                        <select asp-for="DepartmentId" asp-items="Model.Departments" class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        </select>
+                        <span asp-validation-for="DepartmentId" class="text-sm text-red-600"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 flex items-center justify-end space-x-4">
+                <a asp-action="Index" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    Cancel
+                </a>
+                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

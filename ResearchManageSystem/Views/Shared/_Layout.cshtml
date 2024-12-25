@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-50">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Research Management System</title>
+    <link rel="stylesheet" href="~/tailwindcss/tailwind.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="h-full bg-gray-50">
+    <div class="min-h-full">
+        <header>
+            <nav class="bg-white border-b">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between h-16">
+                        <!-- Left side -->
+                        <div class="flex">
+                            <div class="flex-shrink-0 flex items-center">
+                                <a href="/" class="text-xl font-bold text-primary-600">Research MS</a>
+                            </div>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                                    <!-- เมนูหลัก -->
+@*                                     <a href="/" class="border-transparent text-gray-500 hover:border-primary-500 hover:text-primary-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                                        Dashboard
+                                    </a> *@
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a href="/UserManagement" class="border-transparent text-gray-500 hover:border-primary-500 hover:text-primary-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                                            User Management
+                                        </a>
+                                    }
+                                    @if (User.IsInRole("Student"))
+                                    {
+                                        <a href="/Research" class="border-transparent text-gray-500 hover:border-primary-500 hover:text-primary-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                                            Research Management
+                                        </a>
+                                    }
+                                    <!-- เพิ่มเมนูอื่นๆ ตรงนี้ -->
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Right side -->
+                        <div class="flex items-center">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <div class="flex items-center">
+                                    <!-- User name -->
+                                    <span class="text-gray-700 mr-4">@User.FindFirst("FullName")?.Value</span>
+
+                                    <!-- Profile dropdown -->
+                                    <div class="ml-3 relative">
+                                        <div>
+                                            <button type="button" class="flex items-center max-w-xs rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" id="user-menu-button">
+                                                <img class="h-8 w-8 rounded-full object-cover shadow-sm"
+                                                     src="@(User.FindFirst("ProfileImage")?.Value ?? "/images/default-profile.png")"
+                                                     alt="Profile" />
+                                            </button>
+                                        </div>
+
+                                        <!-- Dropdown menu -->
+                                        <div id="user-menu" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 z-50">
+                                            <a href="/Profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                                            <form asp-controller="Account" asp-action="Logout" method="post">
+                                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+@*                             else
+                            {
+                                <a href="/Account/Login" class="text-gray-700 hover:text-primary-600">Login</a>
+                            } *@
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                @RenderBody()
+            </div>
+        </main>
+
+        <footer class="bg-white border-t mt-auto">
+            <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                <p class="text-center text-sm text-gray-500">&copy; 2024 - Research Management System</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        // Toggle dropdown menu
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenu = document.getElementById('user-menu');
+        
+        if (userMenuButton && userMenu) {
+            userMenuButton.addEventListener('click', () => {
+                userMenu.classList.toggle('hidden');
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (event) => {
+                if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+        }
+
+        // ไฮไลท์เมนูที่กำลังใช้งาน
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentPath = window.location.pathname;
+            const menuLinks = document.querySelectorAll('nav a');
+            
+            menuLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.remove('border-transparent', 'text-gray-500');
+                    link.classList.add('border-primary-500', 'text-primary-700');
+                }
+            });
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

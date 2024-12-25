@@ -1,0 +1,101 @@
+﻿@using ResearchManageSystem.Enums
+@model CreateUserViewModel
+
+@{
+    ViewData["Title"] = "Add New User";
+}
+
+<div class="max-w-2xl mx-auto px-4 py-8">
+    <div class="bg-white shadow sm:rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+            <h1 class="text-xl font-semibold text-gray-900 mb-6">Add New User</h1>
+
+            <form asp-action="Create" method="post" class="space-y-6">
+                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+                    <div>
+                        <label asp-for="Username" class="block text-sm font-medium text-gray-700">Username</label>
+                        <div class="mt-1">
+                            <input asp-for="Username" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+                        </div>
+                        <span asp-validation-for="Username" class="text-sm text-red-600"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="Email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <div class="mt-1">
+                            <input asp-for="Email" type="email" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+                        </div>
+                        <span asp-validation-for="Email" class="text-sm text-red-600"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="FirstName" class="block text-sm font-medium text-gray-700">First Name</label>
+                        <div class="mt-1">
+                            <input asp-for="FirstName" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+                        </div>
+                        <span asp-validation-for="FirstName" class="text-sm text-red-600"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="LastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+                        <div class="mt-1">
+                            <input asp-for="LastName" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+                        </div>
+                        <span asp-validation-for="LastName" class="text-sm text-red-600"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="Role" class="block text-sm font-medium text-gray-700">Role</label>
+                        <div class="mt-1">
+                            <select asp-for="Role" asp-items="Html.GetEnumSelectList<UserRole>()" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                <option value="">Select a role</option>
+                            </select>
+                        </div>
+                        <span asp-validation-for="Role" class="text-sm text-red-600"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="DepartmentId" class="block text-sm font-medium text-gray-700">Department</label>
+                        <div class="mt-1">
+                            <select asp-for="DepartmentId" asp-items="Model.Departments" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                <option value="">Select a department</option>
+                            </select>
+                        </div>
+                        <span asp-validation-for="DepartmentId" class="text-sm text-red-600"></span>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label asp-for="Password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <div class="mt-1">
+                            <input asp-for="Password" type="password"
+                                   class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                                   autocomplete="new-password" />
+                        </div>
+                        <span asp-validation-for="Password" class="text-sm text-red-600"></span>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label asp-for="ConfirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                        <div class="mt-1">
+                            <input asp-for="ConfirmPassword" type="password"
+                                   class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                                   autocomplete="new-password" />
+                        </div>
+                        <span asp-validation-for="ConfirmPassword" class="text-sm text-red-600"></span>
+                    </div>
+                </div>
+
+                <div class="pt-5">
+                    <div class="flex justify-end space-x-3">
+                        <a asp-action="Index" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Cancel
+                        </a>
+                        <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Create User
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

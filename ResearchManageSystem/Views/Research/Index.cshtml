@@ -1,0 +1,104 @@
+@using System.Security.Claims
+@model ResearchViewModel
+
+@{
+    ViewData["Title"] = "My Research";
+}
+
+<div class="max-w-3xl mx-auto px-4">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold">My Research Project</h1>
+        @if (Model == null)
+        {
+            <a asp-action="Create" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                Create New Research
+            </a>
+        }
+    </div>
+
+    @if (Model == null)
+    {
+        <div class="bg-white rounded-lg shadow p-6 text-center">
+            <p class="text-gray-600">You don't have any research project yet.</p>
+            <p class="text-gray-500 mt-2">Click the 'Create New Research' button to start a new project.</p>
+        </div>
+    }
+    else
+    {
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <!-- Research Details -->
+            <div class="p-6">
+                <div class="mb-4">
+                    <h2 class="text-xl font-semibold">@Model.Title</h2>
+                    <span class="@(Model.Status?.ToLower() switch {
+                        "inprogress" => "bg-blue-100 text-blue-800",
+                        "completed" => "bg-green-100 text-green-800",
+                        _ => "bg-gray-100 text-gray-800"
+                    }) inline-flex rounded-full px-2 text-xs font-semibold mt-2">
+                        @Model.Status
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                        <p class="text-gray-600">Advisor:</p>
+                        <p class="font-medium">@Model.AdvisorName</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600">Created Date:</p>
+                        <p class="font-medium">@Model.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy")</p>
+                    </div>
+                </div>
+
+                <!-- Research Members -->
+                <div class="mt-6">
+                    <h3 class="text-lg font-medium mb-3">Research Members</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Role</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Joined Date</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                @foreach (var student in Model.Students)
+                                {
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">@student.StudentName</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="@(student.IsLeader ? "bg-green-100 text-green-800" : "bg-blue-100 text-blue-800") px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
+                                                @(student.IsLeader ? "Leader" : "Member")
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            @student.JoinedDate.ToLocalTime().ToString("dd/MM/yyyy")
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="bg-gray-50 px-6 py-4">
+                <div class="flex justify-end space-x-4">
+                    @{
+                        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                        var isLeader = Model.Students.Any(s => s.StudentId == int.Parse(userId) && s.IsLeader);
+                    }
+                    @if (isLeader)
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model.Id"
+                           class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                            Edit Research
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
